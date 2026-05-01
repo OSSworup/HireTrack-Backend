@@ -14,15 +14,52 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  ADMIN
-  RECRUITER
-  CANDIDATE
-}
+
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   email String @unique
   password String
-  role Role
+  name      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userRoles UserRole[]
+
+  @@index([email])
+  @@index([isActive])
+  @@map("users")
+}
+
+model Role{
+  id String @id @default(cuid())
+  name String @unique
+  description String?
+  permissions String[]
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userRoles UserRole[]
+
+  @@index([name])
+  @@index([isActive])
+  @@map("roles")
+}
+
+model UserRole{
+  id String @id @default(cuid())
+  userId String
+  roleId String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
 }

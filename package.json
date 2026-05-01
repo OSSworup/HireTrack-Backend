@@ -9,6 +9,9 @@
     "build": "npm run prisma:generate && tsc",
     "start": "node dist/server.js"
   },
+  "prisma": {
+    "seed": "tsx prisma/seeds/seed.ts"
+  },
   "keywords": [],
   "author": "Omm Subham Sworup Ojha",
   "license": "ISC",
