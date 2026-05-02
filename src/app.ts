@@ -12,6 +12,8 @@ app.get('/',(req,res)=>{
 })
 
 import userRoutes from "./routes/user.routes.js";
+import roleRoutes from "./routes/role.routes.js";
 app.use("/api/user",userRoutes);
+app.use("/api/role",roleRoutes);
 
 export default app;

@@ -1,8 +1,9 @@
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 import {} from "express";
+import prisma from "../prisma/client.js";
 const secretKey = process.env.JWT_SECRET;
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     const authHeader = req.header("authorization");
     if (!authHeader) {
         return res.status(401).send("Access denied");
@@ -12,8 +13,25 @@ const authMiddleware = (req, res, next) => {
         return res.status(401).send("Access denied");
     }
     try {
-        const decoded = jwt.verify(token, secretKey);
-        req.user = decoded;
+        const payload = jwt.verify(token, secretKey);
+        const user = await prisma.user.findUnique({
+            where: { id: payload.sub },
+            include: {
+                userRoles: {
+                    include: {
+                        role: true,
+                    },
+                },
+            },
+        });
+        if (!user) {
+            return res.status(401).send("User not found");
+        }
+        req.user = {
+            id: user.id,
+            email: user.email,
+            roles: user.userRoles.map((ur) => ur.role),
+        };
         next();
     }
     catch (error) {

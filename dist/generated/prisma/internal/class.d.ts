@@ -126,5 +126,27 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get user(): Prisma.UserDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    /**
+     * `prisma.role`: Exposes CRUD operations for the **Role** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Roles
+      * const roles = await prisma.role.findMany()
+      * ```
+      */
+    get role(): Prisma.RoleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.userRole`: Exposes CRUD operations for the **UserRole** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more UserRoles
+      * const userRoles = await prisma.userRole.findMany()
+      * ```
+      */
+    get userRole(): Prisma.UserRoleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;
