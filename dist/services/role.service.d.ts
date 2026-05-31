@@ -22,7 +22,7 @@ export declare const roleListService: (page?: number, size?: number) => Promise<
     description: string | null;
     permissions: string[];
 }[]>;
-export declare const roleReadService: (id: string) => Promise<{
+export declare const roleDetailService: (id: string) => Promise<{
     userRoles: ({
         user: {
             id: string;
@@ -66,3 +66,20 @@ export declare const deleteRoleService: (id: string) => Promise<{
     description: string | null;
     permissions: string[];
 }>;
+export declare const permissionListService: () => {
+    readonly USER: {
+        readonly CREATE: "user:create";
+        readonly READ: "user:read";
+        readonly UPDATE: "user:update";
+        readonly DELETE: "user:delete";
+        readonly LIST: "user:list";
+    };
+    readonly ROLE: {
+        readonly CREATE: "role:create";
+        readonly READ: "role:read";
+        readonly UPDATE: "role:update";
+        readonly DELETE: "role:delete";
+        readonly LIST: "role:list";
+        readonly ASSIGN: "role:assign";
+    };
+};

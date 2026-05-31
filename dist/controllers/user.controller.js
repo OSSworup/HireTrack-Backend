@@ -18,12 +18,12 @@ export const LoginUser = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
-export const FetchUser = async (req, res) => {
+export const FetchUserDetails = async (req, res) => {
     try {
-        if (!req.user?.id) {
+        if (!req.params.id) {
             return res.status(401).json({ error: "Not authenticated" });
         }
-        const result = await FetchUserService(req.user.id);
+        const result = await FetchUserService(req.params.id);
         res.status(200).json(result);
     }
     catch (error) {

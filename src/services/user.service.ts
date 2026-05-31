@@ -4,7 +4,7 @@ import type { LoginUserInput, RegisterUserInput, UpdateUserData } from "../types
 import { generateToken } from "../middlewares/auth.js";
 
 export const RegisterUserService = async (data: RegisterUserInput) => {
-    const { name, email, password } = data;
+    const { name, email, password,roleIds } = data;
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
@@ -27,9 +27,11 @@ export const RegisterUserService = async (data: RegisterUserInput) => {
             email,
             password: hashedPassword,
             userRoles: {
-                create: [{ roleId: userRole.id }]
-            }
-        }
+                create:roleIds.map(roleId=>({
+                    roleId,
+                })),
+            },
+        },
     });
 
     return {
@@ -83,13 +85,27 @@ export const FetchUserService = async (id: string) => {
 
 export const FetchAllUsers = async (page: number = 1, size: number = 5) => {
     const skip = (page - 1) * size;
-    return await prisma.user.findMany({
+    const users = await prisma.user.findMany({
         orderBy: {
             createdAt: "desc",
         },
         skip: skip,
         take: size,
+        include: {
+            userRoles: {
+                include: {
+                    role: true
+                }
+            }
+        }
     });;
+
+    const result = users.map(user => ({
+        ...user,
+        roles: user.userRoles.map(ur => ur.role),
+    }));
+
+    return result;
 }
 
 export const UpdateUserService = async (id: string, data: UpdateUserData) => {
@@ -110,18 +126,18 @@ export const UpdateUserPasswordService = async (id: string, password: string) =>
     });
 }
 
-export const AssignUserRoleService=async (userId:string,roleIds:string[])=>{
+export const AssignUserRoleService = async (userId: string, roleIds: string[]) => {
     await prisma.$transaction([
         prisma.userRole.deleteMany({
-            where:{userId:userId},
+            where: { userId: userId },
         }),
 
         prisma.userRole.createMany({
-            data:roleIds.map((roleId)=>({
+            data: roleIds.map((roleId) => ({
                 roleId,
                 userId,
             })),
-            skipDuplicates:true,
+            skipDuplicates: true,
         })
     ]);
 }

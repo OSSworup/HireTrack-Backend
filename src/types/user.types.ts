@@ -7,6 +7,7 @@ export type RegisterUserInput = {
   name: string;
   email: string;
   password: string;
+  roleIds:string[];
 };
 
 export type LoginUserInput = {

@@ -7,7 +7,7 @@ type CreateRoleInput = {
 };
 export declare const CreateRole: (req: Request<{}, {}, CreateRoleInput>, res: Response) => Promise<void>;
 export declare const RoleList: (req: Request, res: Response) => Promise<void>;
-export declare const RoleRead: (req: Request<{
+export declare const RoleDetails: (req: Request<{
     id: string;
 }>, res: Response) => Promise<void>;
 export declare const UpdateRole: (req: Request<{
@@ -16,4 +16,5 @@ export declare const UpdateRole: (req: Request<{
 export declare const DeleteRole: (req: Request<{
     id: string;
 }>, res: Response) => Promise<void>;
+export declare const PermissionList: (req: Request, res: Response) => void;
 export {};

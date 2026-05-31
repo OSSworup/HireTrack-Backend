@@ -1,3 +1,4 @@
+import { PERMISSIONS } from "../common/permissions.js";
 import prisma from "../prisma/client.js";
 
 export type UpdateRoleData = {
@@ -38,7 +39,7 @@ export const roleListService = async (page: number = 1, size: number = 5) => {
     });
 }
 
-export const roleReadService = async (id: string) => {
+export const roleDetailService = async (id: string) => {
     const role = await prisma.role.findUnique({
         where: { id },
         include: {
@@ -76,5 +77,9 @@ export const deleteRoleService = async (id: string) => {
     return await prisma.role.delete({
         where: { id },
     });
+}
+
+export const permissionListService = ()=>{
+    return PERMISSIONS;
 }
 

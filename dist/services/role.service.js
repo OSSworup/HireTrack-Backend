@@ -1,3 +1,4 @@
+import { PERMISSIONS } from "../common/permissions.js";
 import prisma from "../prisma/client.js";
 export const createRoleService = async (name, description, permissions) => {
     const existingRole = await prisma.role.findUnique({ where: { name } });
@@ -23,7 +24,7 @@ export const roleListService = async (page = 1, size = 5) => {
         take: size,
     });
 };
-export const roleReadService = async (id) => {
+export const roleDetailService = async (id) => {
     const role = await prisma.role.findUnique({
         where: { id },
         include: {
@@ -55,5 +56,10 @@ export const deleteRoleService = async (id) => {
     return await prisma.role.delete({
         where: { id },
     });
+};
+export const permissionListService = () => {
+    console.log("Working till here ?");
+    console.log(PERMISSIONS);
+    return PERMISSIONS;
 };
 //# sourceMappingURL=role.service.js.map

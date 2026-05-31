@@ -1,5 +1,5 @@
 import {} from "express";
-import { createRoleService, roleListService, roleReadService, updateRoleService, deleteRoleService, } from "../services/role.service.js";
+import { createRoleService, roleListService, roleDetailService, updateRoleService, deleteRoleService, permissionListService, } from "../services/role.service.js";
 export const CreateRole = async (req, res) => {
     try {
         const { name, description, permissions } = req.body;
@@ -21,9 +21,9 @@ export const RoleList = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
-export const RoleRead = async (req, res) => {
+export const RoleDetails = async (req, res) => {
     try {
-        const result = await roleReadService(req.params.id);
+        const result = await roleDetailService(req.params.id);
         res.status(200).json(result);
     }
     catch (error) {
@@ -42,6 +42,16 @@ export const UpdateRole = async (req, res) => {
 export const DeleteRole = async (req, res) => {
     try {
         const result = await deleteRoleService(req.params.id);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+export const PermissionList = (req, res) => {
+    try {
+        const result = permissionListService();
+        console.log("Happening ?");
         res.status(200).json(result);
     }
     catch (error) {

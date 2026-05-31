@@ -30,13 +30,13 @@ export const LoginUser=async(req:Request<{},{},LoginUserInput>,res:Response)=>{
     }
 }
 
-export const FetchUser=async(req:AuthRequest,res:Response)=>{
+export const FetchUserDetails=async(req:Request<{id:string}>,res:Response)=>{
     try{
-        if(!req.user?.id){
+        if(!req.params.id){
             return res.status(401).json({ error: "Not authenticated" });
         }
 
-        const result =await FetchUserService(req.user.id);
+        const result =await FetchUserService(req.params.id);
         res.status(200).json(result);
     }catch(error:any){
         res.status(400).json({ error: error.message });

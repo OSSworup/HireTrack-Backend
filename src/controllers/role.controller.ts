@@ -2,10 +2,11 @@ import { type Request, type Response } from "express";
 import {
     createRoleService,
     roleListService,
-    roleReadService,
+    roleDetailService,
     updateRoleService,
     deleteRoleService,
     type UpdateRoleData,
+    permissionListService,
 } from "../services/role.service.js";
 
 type CreateRoleInput = {
@@ -36,9 +37,9 @@ export const RoleList = async (req: Request, res: Response) => {
     }
 }
 
-export const RoleRead = async (req: Request<{ id: string }>, res: Response) => {
+export const RoleDetails = async (req: Request<{ id: string }>, res: Response) => {
     try {
-        const result = await roleReadService(req.params.id);
+        const result = await roleDetailService(req.params.id);
         res.status(200).json(result);
     } catch (error: any) {
         res.status(400).json({ error: error.message });
@@ -59,6 +60,15 @@ export const DeleteRole = async (req: Request<{ id: string }>, res: Response) =>
         const result = await deleteRoleService(req.params.id);
         res.status(200).json(result);
     } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const PermissionList = (req:Request,res:Response)=>{
+    try{
+        const result = permissionListService();
+        res.status(200).json(result);
+    }catch (error: any) {
         res.status(400).json({ error: error.message });
     }
 }
