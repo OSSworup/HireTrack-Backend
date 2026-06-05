@@ -71,7 +71,7 @@ export const LoginUserService = async (data: LoginUserInput) => {
 }
 
 export const FetchUserService = async (id: string) => {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: { id: id },
         include: {
             userRoles: {
@@ -81,6 +81,24 @@ export const FetchUserService = async (id: string) => {
             },
         },
     });
+
+    if(!user) return null;
+
+    const roles=user.userRoles.map((ur)=>ur.role.name);
+
+    const permissions=[
+        ...new Set(
+            user.userRoles.flatMap((ur)=>ur.role.permissions)
+        )
+    ];
+
+    return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        roles,
+        permissions,
+    };
 }
 
 export const FetchAllUsers = async (page: number = 1, size: number = 5) => {

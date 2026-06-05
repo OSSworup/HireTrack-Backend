@@ -39,7 +39,7 @@ const authMiddleware=async (req:AuthRequest,res:Response,next:NextFunction)=>{
         }
 
         req.user={
-            id:user.id,
+            sub:user.id,
             email:user.email,
             roles:user.userRoles.map((ur)=>ur.role),
         }

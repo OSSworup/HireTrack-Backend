@@ -9,12 +9,14 @@ import {
     AssignUserRole,
     DeleteUser,
     FetchUserDetails,
+    getCurrentUser,
 } from "../controllers/user.controller.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import { requirePermissions } from "../middlewares/permissionGuard.js";
 
 router.post('/register', authMiddleware, requirePermissions("user:create"), RegisterUser);
 router.post('/login', LoginUser);
+router.get('/me',authMiddleware,getCurrentUser);
 router.get('/:id', authMiddleware, requirePermissions("user:read"), FetchUserDetails);
 router.get('/', authMiddleware, requirePermissions("user:list"), FetchAllUsers);
 router.patch('/:id', authMiddleware, requirePermissions("user:update"), UpdateUser);
