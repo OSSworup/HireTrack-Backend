@@ -19,6 +19,8 @@ export const CreateUserService = async (data: RegisterUserInput) => {
         throw new Error("User role not found")
     }
 
+    const assignedRoleIds = roleIds?.length ? roleIds : [userRole.id];
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const user = await prisma.user.create({
@@ -27,7 +29,7 @@ export const CreateUserService = async (data: RegisterUserInput) => {
             email,
             password: hashedPassword,
             userRoles: {
-                create:roleIds.map(roleId=>({
+                create:assignedRoleIds.map(roleId=>({
                     roleId,
                 })),
             },

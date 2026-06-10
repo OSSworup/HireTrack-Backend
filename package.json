@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "rbac-admin-panel-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Dynamic RBAC admin API for AccessBoard with JWT auth, user management, role management, and permission guards",
   "main": "dist/server.js",
   "scripts": {
     "prisma:generate": "prisma generate",
