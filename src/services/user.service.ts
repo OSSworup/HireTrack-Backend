@@ -3,7 +3,7 @@ import prisma from "../prisma/client.js";
 import type { LoginUserInput, RegisterUserInput, UpdateUserData } from "../types/user.types.js";
 import { generateToken } from "../middlewares/auth.js";
 
-export const RegisterUserService = async (data: RegisterUserInput) => {
+export const CreateUserService = async (data: RegisterUserInput) => {
     const { name, email, password,roleIds } = data;
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -119,7 +119,13 @@ export const FetchAllUsers = async (page: number = 1, size: number = 5) => {
     });;
 
     const result = users.map(user => ({
-        ...user,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        isActive:user.isActive,
+        createdAt:user.createdAt,
+        updatedAt:user.updatedAt,
+        userRoles:user.userRoles,
         roles: user.userRoles.map(ur => ur.role),
     }));
 

@@ -1,5 +1,5 @@
 import {
-    RegisterUserService,
+    CreateUserService,
     LoginUserService,
     FetchUserService,
     FetchAllUsers as FetchAllUsersService,
@@ -12,9 +12,9 @@ import { type Request, type Response } from "express";
 import type { LoginUserInput, RegisterUserInput, UpdateUserData } from "../types/user.types.js";
 import type { AuthRequest } from "../types/auth.types.js";
 
-export const RegisterUser = async (req: Request<{}, {}, RegisterUserInput>, res: Response) => {
+export const CreateUser = async (req: Request<{}, {}, RegisterUserInput>, res: Response) => {
     try {
-        const result = await RegisterUserService(req.body);
+        const result = await CreateUserService(req.body);
         res.status(201).json(result);
     } catch (error: any) {
         res.status(400).json({ error: error.message });

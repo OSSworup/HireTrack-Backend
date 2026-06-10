@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {
-    RegisterUser,
+    CreateUser,
     LoginUser,
     FetchAllUsers,
     UpdateUser,
@@ -14,7 +14,7 @@ import {
 import { authMiddleware } from "../middlewares/auth.js";
 import { requirePermissions } from "../middlewares/permissionGuard.js";
 
-router.post('/register', authMiddleware, requirePermissions("user:create"), RegisterUser);
+router.post('/', authMiddleware, requirePermissions("user:create"), CreateUser);
 router.post('/login', LoginUser);
 router.get('/me',authMiddleware,getCurrentUser);
 router.get('/:id', authMiddleware, requirePermissions("user:read"), FetchUserDetails);
